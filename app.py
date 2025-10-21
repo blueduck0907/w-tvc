@@ -1,11 +1,17 @@
-﻿from flask import Flask, render_template
+﻿from flask import Flask, render_template, send_from_directory
+import os
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static', static_url_path='/static')
 
 
 @app.route("/")
 def home():
     return render_template("index.html", title="Trang chủ", message="Thịt heo đóng gói ăn nhanh – tiện lợi, an toàn, thơm ngon.")
+
+
+@app.route("/test")
+def test():
+    return "PORK UP website is working!"
 
 
 @app.route("/gioi-thieu")
@@ -26,6 +32,21 @@ def lien_he():
 @app.route("/health")
 def health():
     return {"status": "ok", "message": "PORK UP website is running"}
+
+
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    return send_from_directory('static', filename)
+
+
+@app.errorhandler(404)
+def not_found(error):
+    return render_template("index.html", title="Trang chủ"), 404
+
+
+@app.errorhandler(500)
+def internal_error(error):
+    return render_template("index.html", title="Trang chủ"), 500
 
 
 if __name__ == "__main__":
