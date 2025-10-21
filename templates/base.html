@@ -1,0 +1,350 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title or 'Trang web' }}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-inner">
+      <a class="logo" href="{{ url_for('home') }}">
+        <img src="{{ url_for('static', filename='LOGO.png') }}" alt="Logo" class="logo-img">
+      </a>
+      <nav>
+        <ul class="nav-links">
+          <li><a href="{{ url_for('home') }}">Trang chủ</a></li>
+          <li><a href="{{ url_for('gioi_thieu') }}">Giới thiệu</a></li>
+          <li><a href="{{ url_for('san_pham') }}">Sản phẩm</a></li>
+          <li><a href="{{ url_for('lien_he') }}">Liên hệ</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  {% block content %}{% endblock %}
+
+  <!-- Loading Screen -->
+  <div id="loadingScreen" class="loading-screen">
+    <div class="loading-content">
+      <div class="loading-logo">
+        <img src="{{ url_for('static', filename='LOGO.png') }}" alt="Pork Up Logo" class="loading-logo-img">
+      </div>
+      <div class="loading-spinner">
+        <div class="spinner"></div>
+      </div>
+      <div class="loading-text">Đang tải...</div>
+      </div>
+  </div>
+
+  <!-- Cache Status Indicator -->
+  <div id="cacheStatus" class="cache-status">
+    <span id="cacheText">Cache đã sẵn sàng</span>
+  </div>
+
+  <script>
+    (function() {
+      // Website Cache Manager
+      class WebsiteCache {
+        constructor() {
+          this.cacheKey = 'porkup_website_cache';
+          this.cacheVersion = '1.0';
+          this.images = [
+            '/static/LOGO.png',
+            '/static/STANDEE.png',
+            '/static/banner.png',
+            '/static/banner_1.png',
+            '/static/banner_2.png',
+            '/static/banner_4.jpg',
+            '/static/dk_1.jpg',
+            '/static/dk_2.jpg'
+          ];
+          this.pages = [
+            '/',
+            '/gioi-thieu',
+            '/san-pham',
+            '/lien-he'
+          ];
+        }
+
+        async preloadImages() {
+          const promises = this.images.map(src => {
+            return new Promise((resolve, reject) => {
+              const img = new Image();
+              img.onload = () => resolve(src);
+              img.onerror = () => reject(src);
+              img.src = src;
+            });
+          });
+
+          try {
+            await Promise.all(promises);
+            console.log('All images preloaded successfully');
+            this.saveCacheStatus();
+          } catch (error) {
+            console.log('Some images failed to preload:', error);
+          }
+        }
+
+        async preloadPages() {
+          const promises = this.pages.map(page => {
+            return fetch(page, {
+              method: 'GET',
+              headers: {
+                'Cache-Control': 'no-cache'
+              }
+            }).then(response => {
+              if (response.ok) {
+                return response.text();
+              }
+              throw new Error(`Failed to load ${page}`);
+            });
+          });
+
+          try {
+            await Promise.all(promises);
+            console.log('All pages preloaded successfully');
+          } catch (error) {
+            console.log('Some pages failed to preload:', error);
+          }
+        }
+
+        saveCacheStatus() {
+          const cacheData = {
+            version: this.cacheVersion,
+            timestamp: Date.now(),
+            imagesLoaded: true
+          };
+          localStorage.setItem(this.cacheKey, JSON.stringify(cacheData));
+        }
+
+        isCacheValid() {
+          const cacheData = localStorage.getItem(this.cacheKey);
+          if (!cacheData) return false;
+          
+          const data = JSON.parse(cacheData);
+          const oneDay = 24 * 60 * 60 * 1000; // 24 hours
+          
+          return data.version === this.cacheVersion && 
+                 data.imagesLoaded && 
+                 (Date.now() - data.timestamp) < oneDay;
+        }
+
+        async initializeCache() {
+          if (this.isCacheValid()) {
+            console.log('Cache is valid, using cached data');
+            this.showCacheStatus('Cache đã sẵn sàng', 'success');
+            cacheReady = true;
+            return true;
+          }
+
+          console.log('Cache invalid or missing, preloading...');
+          this.showCacheStatus('Đang tải cache...', 'loading');
+          await Promise.all([
+            this.preloadImages(),
+            this.preloadPages()
+          ]);
+          this.showCacheStatus('Cache đã sẵn sàng', 'success');
+          cacheReady = true;
+          return true;
+        }
+
+        showCacheStatus(message, type) {
+          const cacheStatus = document.getElementById('cacheStatus');
+          const cacheText = document.getElementById('cacheText');
+          
+          if (cacheStatus && cacheText) {
+            cacheText.textContent = message;
+            cacheStatus.className = `cache-status show ${type}`;
+            
+            if (type === 'success') {
+              setTimeout(() => {
+                cacheStatus.classList.remove('show');
+              }, 3000);
+            }
+          }
+        }
+      }
+
+      // Initialize cache manager
+      const cacheManager = new WebsiteCache();
+      let cacheReady = false;
+
+      // Page loading animation with cache
+      document.addEventListener('DOMContentLoaded', async function() {
+        const loadingScreen = document.getElementById('loadingScreen');
+        
+        if (loadingScreen) {
+          // Show loading while preloading
+          await cacheManager.initializeCache();
+          
+          // Hide loading screen
+          setTimeout(() => {
+            loadingScreen.style.opacity = '0';
+            setTimeout(() => {
+              loadingScreen.style.display = 'none';
+            }, 500);
+          }, 300);
+        }
+      });
+
+      // Navigation click handler with SPA approach
+      const navLinks = document.querySelectorAll('.nav-links a');
+      navLinks.forEach(link => {
+        link.addEventListener('click', function(e) {
+          e.preventDefault();
+          
+          // Don't navigate if same page
+          if (this.getAttribute('href') === window.location.pathname) {
+            return;
+          }
+          
+          // Navigate using SPA approach
+          navigateToPage(this.getAttribute('href'));
+        });
+      });
+
+      // SPA Navigation function
+      async function navigateToPage(url) {
+        // Show loading screen
+        showLoadingScreen();
+        
+        try {
+          // Fetch the new page content
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          
+          const html = await response.text();
+          
+          // Parse the HTML and extract content
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(html, 'text/html');
+          const newContent = doc.querySelector('body').innerHTML;
+          
+          // Update the page content
+          document.body.innerHTML = newContent;
+          
+          // Update URL without reload
+          history.pushState(null, '', url);
+          
+          // Re-initialize page-specific scripts
+          initializePageScripts();
+          
+          // Hide loading screen
+          hideLoadingScreen();
+          
+        } catch (error) {
+          console.error('Navigation error:', error);
+          // Fallback to normal navigation
+          window.location.href = url;
+        }
+      }
+
+      // Initialize page-specific scripts
+      function initializePageScripts() {
+        // Re-initialize navigation
+        const navLinks = document.querySelectorAll('.nav-links a');
+        navLinks.forEach(link => {
+          link.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (this.getAttribute('href') === window.location.pathname) {
+              return;
+            }
+            navigateToPage(this.getAttribute('href'));
+          });
+        });
+
+        // Re-initialize active navigation
+        const currentPath = window.location.pathname;
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.getAttribute('href') === currentPath) {
+            link.classList.add('active');
+          }
+        });
+
+        // Re-initialize page-specific functionality
+        if (window.location.pathname === '/lien-he') {
+          // Re-initialize certificate popup
+          if (typeof openCertPopup === 'function') {
+            // Certificate popup functions are already available
+          }
+        }
+      }
+
+      // Set active navigation item
+      const currentPath = window.location.pathname;
+      navLinks.forEach(link => {
+        if (link.getAttribute('href') === currentPath) {
+          link.classList.add('active');
+        }
+      });
+      
+      // Simple banner slider
+      let slideIndex = 1;
+      const slides = document.querySelectorAll('.banner-slide');
+      const dots = document.querySelectorAll('.dot');
+      
+      function showSlides(n) {
+        if (n > slides.length) { slideIndex = 1; }
+        if (n < 1) { slideIndex = slides.length; }
+        
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+        
+        if (slides[slideIndex - 1]) slides[slideIndex - 1].classList.add('active');
+        if (dots[slideIndex - 1]) dots[slideIndex - 1].classList.add('active');
+      }
+      
+      function nextSlide() {
+        slideIndex++;
+        showSlides(slideIndex);
+      }
+      
+      // Auto slide every 5 seconds
+      setInterval(nextSlide, 5000);
+      
+      // Make functions global for onclick
+      window.currentSlide = function(n) {
+        slideIndex = n;
+        showSlides(slideIndex);
+      };
+
+      // Loading screen functions
+      function showLoadingScreen() {
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+          loadingScreen.style.display = 'flex';
+          loadingScreen.style.opacity = '1';
+        }
+      }
+
+      function hideLoadingScreen() {
+        const loadingScreen = document.getElementById('loadingScreen');
+        if (loadingScreen) {
+          loadingScreen.style.opacity = '0';
+          setTimeout(() => {
+            loadingScreen.style.display = 'none';
+          }, 300);
+        }
+      }
+
+      // Service Worker for offline caching (optional)
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('/static/sw.js')
+            .then(function(registration) {
+              console.log('ServiceWorker registration successful');
+            })
+            .catch(function(err) {
+              console.log('ServiceWorker registration failed:', err);
+            });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>

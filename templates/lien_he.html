@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="contact-container">
+    <div class="contact-info">
+      <h1>CƠ SỞ SẢN XUẤT VÀ KINH DOANH</h1>
+      <h2>Công ty TNHH PORK UP</h2>
+      <div class="address-info">
+        <h3>ĐỊA CHỈ:</h3>
+        <p>175A6, KP Bình Khởi, Xã Sơn Đông, Tỉnh Vĩnh Long</p>
+      </div>
+      <div class="company-logo">
+        <img src="{{ url_for('static', filename='LOGO.png') }}" alt="Pork Up Logo" class="logo-img">
+      </div>
+      <div class="certificates-section">
+        <button class="cert-btn" onclick="openCertPopup()">XEM CHỨNG NHẬN</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Certificate Popup -->
+  <div id="certPopup" class="cert-popup">
+    <div class="cert-popup-content">
+      <span class="cert-close" onclick="closeCertPopup()">&times;</span>
+      <h2>CHỨNG NHẬN CHẤT LƯỢNG</h2>
+      <div class="cert-images">
+        <div class="cert-item">
+          <img src="{{ url_for('static', filename='dk_1.jpg') }}" alt="Chứng nhận 1" class="cert-img">
+        </div>
+        <div class="cert-item">
+          <img src="{{ url_for('static', filename='dk_2.jpg') }}" alt="Chứng nhận 2" class="cert-img">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openCertPopup() {
+      document.getElementById('certPopup').style.display = 'block';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCertPopup() {
+      document.getElementById('certPopup').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+
+    // Close popup when clicking outside
+    window.onclick = function(event) {
+      const popup = document.getElementById('certPopup');
+      if (event.target === popup) {
+        closeCertPopup();
+      }
+    }
+
+    // Close popup with Escape key
+    document.addEventListener('keydown', function(event) {
+      if (event.key === 'Escape') {
+        closeCertPopup();
+      }
+    });
+  </script>
+{% endblock %}

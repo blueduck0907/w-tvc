@@ -1,0 +1,50 @@
+﻿{% extends 'base.html' %}
+{% block content %}
+  <!-- Main Layout: Standee Left + Content Right -->
+  <div class="main-container">
+    <!-- Standee Section (Left 40%) -->
+    <section class="standee-section">
+      <div class="standee-container">
+        <img src="{{ url_for('static', filename='STANDEE.png') }}" alt="Pork Up Standee" class="standee-image">
+      </div>
+    </section>
+
+    <!-- Content Section (Right 60%) -->
+    <section class="content-section">
+      <div class="product-info">
+        <div class="product-main-banner">
+          <img src="{{ url_for('static', filename='banner_4.jpg') }}" alt="Product Banner" class="main-banner-img">
+        </div>
+        <h1>THỊT HEO QUAY ĐÓNG GÓI ĂN LIỀN</h1>
+        <h2>PORK UP - SINCE 2025</h2>
+        <p class="tagline">AN TOÀN - TIỆN LỢI</p>
+        
+        <div class="product-variants">
+          <div class="variant-card">
+            <h3>VỊ TRUYỀN THỐNG</h3>
+            <p>Thịt heo quay truyền thống, giòn tan, thơm ngon</p>
+          </div>
+          <div class="variant-card">
+            <h3>VỊ SẢ ỚT</h3>
+            <p>Hương vị sả ớt cay nồng, đậm đà</p>
+          </div>
+          <div class="variant-card">
+            <h3>VỊ HƯƠNG THẢO</h3>
+            <p>Hương thảo tinh tế, sang trọng</p>
+          </div>
+        </div>
+        
+        <div class="features">
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span>AN TOÀN</span>
+          </div>
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <span>TIỆN LỢI</span>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}

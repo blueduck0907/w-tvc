@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="about-container">
+    <div class="about-header">
+      <h1>GIỚI THIỆU SẢN PHẨM PORK UP</h1>
+      <p>Khám phá bộ sưu tập thịt heo quay đóng gói với 3 hương vị độc đáo</p>
+    </div>
+
+    <!-- Product 1: Traditional -->
+    <section class="product-section">
+      <div class="product-image">
+        <img src="{{ url_for('static', filename='banner.png') }}" alt="Vị Truyền Thống" class="product-img">
+      </div>
+      <div class="product-content">
+        <h2>1. VỊ TRUYỀN THỐNG</h2>
+        <div class="product-description">
+          <p><strong>Mùi thơm đặc trưng</strong> của da heo quay vàng óng, hòa quyện cùng mùi hành, tỏi và các hương vị quen thuộc.</p>
+          <p><strong>Lớp da giòn rụm</strong>, cắn nhẹ là nghe tiếng "rộp" vui tai, giữ nguyên độ giòn tan</p>
+          <p><strong>Thịt bên trong mềm mọng</strong>, vừa vị, không khô, không ngấy.</p>
+          <p><strong>Vị mặn ngọt hài hòa</strong>, thoảng chút hương thơm gợi cho ta nhớ đến món heo quay lễ hội, ngày Tết hay cỗ quê.</p>
+          <div class="taste-note">
+            <em>Cảm giác: Đậm đà, quen thuộc, đưa người ăn trở về ký ức bữa cơm gia đình truyền thống.</em>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product 2: Lemongrass Chili -->
+    <section class="product-section">
+      <div class="product-image">
+        <img src="{{ url_for('static', filename='banner_1.png') }}" alt="Vị Sả Ớt" class="product-img">
+      </div>
+      <div class="product-content">
+        <h2>2. VỊ SẢ ỚT CAY NỒNG</h2>
+        <div class="product-description">
+          <p><strong>Mùi sả thơm nhẹ</strong>, xen lẫn ớt đỏ nồng nàn, đánh thức khứu giác ngay từ lần đầu tiên mở ra</p>
+          <p><strong>Lớp da giòn vàng</strong>, hòa cùng vị cay tê tê, kích thích vị giác nhưng vẫn giữ độ cân bằng, không gắt.</p>
+          <p><strong>Thịt ngấm đều gia vị</strong>, cay mặn vừa phải, có hậu ngọt nhẹ từ mỡ heo tan chảy, đọng lại hương cay dịu ở cuối.</p>
+          <div class="taste-note">
+            <em>Cảm giác: Mạnh mẽ, ấn tượng, thích hợp cho người ưa vị đậm đà và năng động.</em>
+            <br><em>"Một miếng cay, một miếng giòn – vừa đủ để nhớ mãi."</em>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product 3: Rosemary -->
+    <section class="product-section">
+      <div class="product-image">
+        <img src="{{ url_for('static', filename='banner_2.png') }}" alt="Vị Hương Thảo" class="product-img">
+      </div>
+      <div class="product-content">
+        <h2>3. HƯƠNG VỊ HƯƠNG THẢO</h2>
+        <div class="product-description">
+          <p><strong>Mùi thơm thanh mát</strong> của rosemary quyện cùng hương thịt nướng đặc trưng, gợi cảm giác "Âu trong Á".</p>
+          <p><strong>Lớp da vàng, giòn tan</strong>, vị mặn ngọt đan xen chút gia vị ướp châu Âu, giúp món ăn mới lạ nhưng vẫn giữ bản sắc Việt.</p>
+          <div class="taste-note">
+            <em>Cảm giác: Tinh tế, hiện đại và nhẹ nhàng</em>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Usage Instructions -->
+    <section class="instructions-section">
+      <h2>HƯỚNG DẪN SỬ DỤNG & BẢO QUẢN</h2>
+      <div class="instructions-grid">
+        <div class="instruction-card">
+          <h3>HƯỚNG DẪN SỬ DỤNG</h3>
+          <p>Có thể ăn liền hoặc làm nóng lại với lò vi sóng, lò nướng, nồi chiên không dầu trong 2-5 phút</p>
+        </div>
+        <div class="instruction-card">
+          <h3>HƯỚNG DẪN BẢO QUẢN</h3>
+          <p>Sử dụng liền trong ngày. Nếu chưa xé bao quý khách có thể để ngăn mát tối đa 7 ngày, ngăn đông tối đa 30 ngày mà hương vị vẫn không thay đổi</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Company Info -->
+    <section class="company-info">
+      <h2>THÔNG TIN CƠ SỞ SẢN XUẤT</h2>
+      <div class="company-details">
+        <div class="company-logo">
+          <img src="{{ url_for('static', filename='LOGO.png') }}" alt="Pork Up Logo" class="logo-img">
+        </div>
+        <div class="company-address">
+          <h3>CÔNG TY TNHH PORK UP</h3>
+          <p><strong>Địa chỉ:</strong> 175 A6, KP Bình Khởi, Phường Sơn Đông, Tỉnh Vĩnh Long</p>
+          <p><strong>Năm thành lập:</strong> 2025</p>
+          <p><strong>Slogan:</strong> AN TOÀN - TIỆN LỢI</p>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}

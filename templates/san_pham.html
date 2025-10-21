@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="products-container">
+    <!-- Banner Section (Left 50%) -->
+    <section class="banners-section">
+      <div class="banner-item">
+        <img src="{{ url_for('static', filename='banner.png') }}" alt="Banner 1" class="product-banner">
+      </div>
+      <div class="banner-item">
+        <img src="{{ url_for('static', filename='banner_1.png') }}" alt="Banner 2" class="product-banner">
+      </div>
+      <div class="banner-item">
+        <img src="{{ url_for('static', filename='banner_2.png') }}" alt="Banner 3" class="product-banner">
+      </div>
+    </section>
+
+    <!-- Product Info Section (Right 50%) -->
+    <section class="product-info-section">
+      <div class="product-details">
+        <div class="product-main-banner">
+          <img src="{{ url_for('static', filename='banner_4.jpg') }}" alt="Product Banner" class="main-banner-img">
+        </div>
+        <h1>SẢN PHẨM PORK UP</h1>
+        <h2>Thịt Heo Quay Đóng Gói Ăn Liền</h2>
+        
+        <div class="product-description">
+          <p>Khám phá bộ sưu tập thịt heo quay đóng gói với 3 hương vị độc đáo, được chế biến theo công thức truyền thống và hiện đại.</p>
+        </div>
+
+        <div class="product-features">
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <div class="feature-text">
+              <h4>AN TOÀN TUYỆT ĐỐI</h4>
+              <p>Quy trình sản xuất đạt chuẩn VSATTP, đảm bảo an toàn thực phẩm</p>
+            </div>
+          </div>
+          
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <div class="feature-text">
+              <h4>TIỆN LỢI TỐI ĐA</h4>
+              <p>Đóng gói hút chân không, bảo quản lạnh, hâm nóng 3-5 phút là dùng ngay</p>
+            </div>
+          </div>
+          
+          <div class="feature-item">
+            <span class="feature-icon">✓</span>
+            <div class="feature-text">
+              <h4>HƯƠNG VỊ ĐA DẠNG</h4>
+              <p>3 hương vị: Truyền thống, Sả ớt, Hương thảo - phù hợp mọi khẩu vị</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="product-specs">
+          <h3>THÔNG SỐ SẢN PHẨM</h3>
+          <div class="specs-grid">
+            <div class="spec-item">
+              <span class="spec-label">Trọng lượng:</span>
+              <span class="spec-value">100g</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Thành phần:</span>
+              <span class="spec-value">Thịt heo, muối, đường, bột ngọt, hạt nêm, nước tương, tỏi,...</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Hướng dẫn sử dụng:</span>
+              <span class="spec-value">Có thể ăn ngay hoặc làm nóng với lò vi sóng, nồi chiên không dầu, lò nướng trong 2 phút</span>
+            </div>
+            <div class="spec-item">
+              <span class="spec-label">Hướng dẫn bảo quản:</span>
+              <span class="spec-value">Dùng ngay trong ngày, 7 ngày đối với bảo quản ngăn mát, 1 tháng đối với ngăn đông tính từ ngày sản xuất nhằm đảm bảo hương vị tốt nhất</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+{% endblock %}
