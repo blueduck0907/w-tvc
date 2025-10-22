@@ -173,13 +173,21 @@
           console.log('Cache invalid or missing, preloading...');
           this.showCacheStatus('Đang tải cache...', 'loading');
           
-          // Preload images first (most important for mobile)
-          await this.preloadImages();
+          // Preload images in background (non-blocking)
+          this.preloadImages().then(() => {
+            console.log('Images preloaded successfully');
+          }).catch(error => {
+            console.log('Images preload failed:', error);
+          });
           
           // Skip page preloading on mobile for faster loading
           const isMobile = window.innerWidth <= 768;
           if (!isMobile) {
-            await this.preloadPages();
+            this.preloadPages().then(() => {
+              console.log('Pages preloaded successfully');
+            }).catch(error => {
+              console.log('Pages preload failed:', error);
+            });
           }
           
           this.showCacheStatus('Cache đã sẵn sàng', 'success');
@@ -214,12 +222,9 @@
         const isMobile = window.innerWidth <= 768;
         
         if (loadingScreen) {
-          // Show loading while preloading
-          await cacheManager.initializeCache();
-          
-          // Hide loading screen faster on mobile
-          const hideDelay = isMobile ? 100 : 300;
-          const fadeDelay = isMobile ? 200 : 500;
+          // Hide loading screen immediately after DOM is ready
+          const hideDelay = isMobile ? 50 : 100;
+          const fadeDelay = isMobile ? 150 : 300;
           
           setTimeout(() => {
             loadingScreen.style.opacity = '0';
@@ -227,6 +232,13 @@
               loadingScreen.style.display = 'none';
             }, fadeDelay);
           }, hideDelay);
+          
+          // Initialize cache in background (non-blocking)
+          cacheManager.initializeCache().then(() => {
+            console.log('Cache initialized in background');
+          }).catch(error => {
+            console.log('Cache initialization failed:', error);
+          });
         }
       });
 
