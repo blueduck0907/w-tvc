@@ -14,7 +14,7 @@
   <header class="navbar">
     <div class="nav-inner">
       <a class="logo" href="{{ url_for('home') }}">
-        <img src="{{ url_for('static', filename='LOGO.png') }}" alt="PORK UP Logo" class="logo-img">
+        <img src="{{ url_for('static', filename='LOGO.png') }}" alt="PORK UP Logo" class="logo-img" loading="eager">
         <span class="logo-text">PORK UP</span>
       </a>
       <nav>
@@ -74,7 +74,16 @@
         }
 
         async preloadImages() {
-          const promises = this.images.map(src => {
+          // Prioritize critical images for mobile
+          const criticalImages = [
+            '/static/LOGO.png',
+            '/static/banner_4.jpg'
+          ];
+          
+          const otherImages = this.images.filter(img => !criticalImages.includes(img));
+          
+          // Load critical images first
+          const criticalPromises = criticalImages.map(src => {
             return new Promise((resolve, reject) => {
               const img = new Image();
               img.onload = () => resolve(src);
@@ -84,11 +93,28 @@
           });
 
           try {
-            await Promise.all(promises);
-            console.log('All images preloaded successfully');
+            await Promise.all(criticalPromises);
+            console.log('Critical images preloaded successfully');
             this.saveCacheStatus();
+            
+            // Load other images in background (non-blocking)
+            const otherPromises = otherImages.map(src => {
+              return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(src);
+                img.onerror = () => reject(src);
+                img.src = src;
+              });
+            });
+            
+            Promise.all(otherPromises).then(() => {
+              console.log('All images preloaded successfully');
+            }).catch(error => {
+              console.log('Some images failed to preload:', error);
+            });
+            
           } catch (error) {
-            console.log('Some images failed to preload:', error);
+            console.log('Some critical images failed to preload:', error);
           }
         }
 
@@ -146,10 +172,16 @@
 
           console.log('Cache invalid or missing, preloading...');
           this.showCacheStatus('Đang tải cache...', 'loading');
-          await Promise.all([
-            this.preloadImages(),
-            this.preloadPages()
-          ]);
+          
+          // Preload images first (most important for mobile)
+          await this.preloadImages();
+          
+          // Skip page preloading on mobile for faster loading
+          const isMobile = window.innerWidth <= 768;
+          if (!isMobile) {
+            await this.preloadPages();
+          }
+          
           this.showCacheStatus('Cache đã sẵn sàng', 'success');
           cacheReady = true;
           return true;
@@ -179,18 +211,22 @@
       // Page loading animation with cache
       document.addEventListener('DOMContentLoaded', async function() {
         const loadingScreen = document.getElementById('loadingScreen');
+        const isMobile = window.innerWidth <= 768;
         
         if (loadingScreen) {
           // Show loading while preloading
           await cacheManager.initializeCache();
           
-          // Hide loading screen
+          // Hide loading screen faster on mobile
+          const hideDelay = isMobile ? 100 : 300;
+          const fadeDelay = isMobile ? 200 : 500;
+          
           setTimeout(() => {
             loadingScreen.style.opacity = '0';
             setTimeout(() => {
               loadingScreen.style.display = 'none';
-            }, 500);
-          }, 300);
+            }, fadeDelay);
+          }, hideDelay);
         }
       });
 
