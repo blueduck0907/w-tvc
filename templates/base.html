@@ -4,13 +4,18 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{{ title or 'Trang web' }}</title>
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='LOGO.png') }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Faustina:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
   <header class="navbar">
     <div class="nav-inner">
       <a class="logo" href="{{ url_for('home') }}">
-        <img src="{{ url_for('static', filename='LOGO.png') }}" alt="Logo" class="logo-img">
+        <img src="{{ url_for('static', filename='LOGO.png') }}" alt="PORK UP Logo" class="logo-img">
+        <span class="logo-text">PORK UP</span>
       </a>
       <nav>
         <ul class="nav-links">

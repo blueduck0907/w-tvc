@@ -7,13 +7,16 @@
       <div class="address-info">
         <h3>ĐỊA CHỈ:</h3>
         <p>175A6, KP Bình Khởi, Xã Sơn Đông, Tỉnh Vĩnh Long</p>
+       
       </div>
       <div class="company-logo">
         <img src="{{ url_for('static', filename='LOGO.png') }}" alt="Pork Up Logo" class="logo-img">
       </div>
       <div class="certificates-section">
-        <button class="cert-btn" onclick="openCertPopup()">XEM CHỨNG NHẬN</button>
+        <button class="cert-btn" onclick="openCertPopup()">XEM GIẤY PHÉP KINH DOANH</button>
       </div>
+      <h3>SĐT LIÊN HỆ:</h3>
+      <p>0345097039</p>
     </div>
   </div>
 
@@ -35,22 +38,28 @@
 
   <script>
     function openCertPopup() {
-      document.getElementById('certPopup').style.display = 'block';
-      document.body.style.overflow = 'hidden';
+      const popup = document.getElementById('certPopup');
+      if (popup) {
+        popup.style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
     }
 
     function closeCertPopup() {
-      document.getElementById('certPopup').style.display = 'none';
-      document.body.style.overflow = 'auto';
+      const popup = document.getElementById('certPopup');
+      if (popup) {
+        popup.style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
     }
 
     // Close popup when clicking outside
-    window.onclick = function(event) {
+    document.addEventListener('click', function(event) {
       const popup = document.getElementById('certPopup');
       if (event.target === popup) {
         closeCertPopup();
       }
-    }
+    });
 
     // Close popup with Escape key
     document.addEventListener('keydown', function(event) {
@@ -58,5 +67,9 @@
         closeCertPopup();
       }
     });
+
+    // Make functions global
+    window.openCertPopup = openCertPopup;
+    window.closeCertPopup = closeCertPopup;
   </script>
 {% endblock %}
