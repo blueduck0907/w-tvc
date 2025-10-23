@@ -43,10 +43,6 @@
       </div>
   </div>
 
-  <!-- Cache Status Indicator -->
-  <div id="cacheStatus" class="cache-status">
-    <span id="cacheText">Cache đã sẵn sàng</span>
-  </div>
 
   <script>
     (function() {
@@ -165,13 +161,11 @@
         async initializeCache() {
           if (this.isCacheValid()) {
             console.log('Cache is valid, using cached data');
-            this.showCacheStatus('Cache đã sẵn sàng', 'success');
             cacheReady = true;
             return true;
           }
 
           console.log('Cache invalid or missing, preloading...');
-          this.showCacheStatus('Đang tải cache...', 'loading');
           
           // Preload images in background (non-blocking)
           this.preloadImages().then(() => {
@@ -190,26 +184,10 @@
             });
           }
           
-          this.showCacheStatus('Cache đã sẵn sàng', 'success');
           cacheReady = true;
           return true;
         }
 
-        showCacheStatus(message, type) {
-          const cacheStatus = document.getElementById('cacheStatus');
-          const cacheText = document.getElementById('cacheText');
-          
-          if (cacheStatus && cacheText) {
-            cacheText.textContent = message;
-            cacheStatus.className = `cache-status show ${type}`;
-            
-            if (type === 'success') {
-              setTimeout(() => {
-                cacheStatus.classList.remove('show');
-              }, 3000);
-            }
-          }
-        }
       }
 
       // Initialize cache manager

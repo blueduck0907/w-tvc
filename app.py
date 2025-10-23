@@ -29,6 +29,11 @@ def lien_he():
     return render_template("lien_he.html", title="Liên hệ")
 
 
+@app.route("/giay-phep")
+def giay_phep():
+    return render_template("giay_phep.html", title="Giấy phép kinh doanh")
+
+
 @app.route("/health")
 def health():
     return {"status": "ok", "message": "PORK UP website is running"}

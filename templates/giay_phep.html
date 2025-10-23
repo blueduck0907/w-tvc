@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+  <div class="certificates-page">
+    <div class="certificates-container">
+      <h1>GIẤY PHÉP KINH DOANH</h1>
+      <h2>Công ty TNHH PORK UP</h2>
+      
+      <div class="certificates-grid">
+        <div class="cert-item">
+          <h3>Giấy phép kinh doanh số 1</h3>
+          <img src="{{ url_for('static', filename='dk_1.jpg') }}" alt="Giấy phép kinh doanh 1" class="cert-img">
+        </div>
+        
+        <div class="cert-item">
+          <h3>Giấy phép kinh doanh số 2</h3>
+          <img src="{{ url_for('static', filename='dk_2.jpg') }}" alt="Giấy phép kinh doanh 2" class="cert-img">
+        </div>
+      </div>
+      
+      <div class="back-button">
+        <a href="/lien-he" class="back-btn">← Quay lại trang liên hệ</a>
+      </div>
+    </div>
+  </div>
+{% endblock %}
