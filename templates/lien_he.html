@@ -42,6 +42,9 @@
       if (popup) {
         popup.style.display = 'block';
         document.body.style.overflow = 'hidden';
+        console.log('Popup opened');
+      } else {
+        console.log('Popup element not found');
       }
     }
 
@@ -50,8 +53,32 @@
       if (popup) {
         popup.style.display = 'none';
         document.body.style.overflow = 'auto';
+        console.log('Popup closed');
       }
     }
+
+    // Wait for DOM to be ready
+    document.addEventListener('DOMContentLoaded', function() {
+      const certBtn = document.querySelector('.cert-btn');
+      const closeBtn = document.querySelector('.cert-close');
+      
+      if (certBtn) {
+        certBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          openCertPopup();
+        });
+        console.log('Button event listener added');
+      } else {
+        console.log('Button not found');
+      }
+      
+      if (closeBtn) {
+        closeBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          closeCertPopup();
+        });
+      }
+    });
 
     // Close popup when clicking outside
     document.addEventListener('click', function(event) {
